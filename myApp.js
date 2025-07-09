@@ -40,17 +40,26 @@ const createManyPeople = (arrayOfPeople, done) => {
 
 const findPeopleByName = (personName, done) => {
   Person.find({ name: personName }, (err, data) => {
-    if (err) return done(err);
+    if (err) return done(err, 'Error finding peoples by name');
+    if (data.length === 0) return done(null, 'No people found with that name');
     done(null, data);
   });
 };
 
 const findOneByFood = (food, done) => {
-  done(null /*, data*/);
+  Person.findOne({ favoriteFoods: food }, (err, data) => {
+    if(err) return done(err, 'Error finding person by food');
+    if (!data) return done(null, 'No person found with that food');
+    done(null, data);
+  });
 };
 
 const findPersonById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findById( personId, (err, data) => {
+    if(err) return done(err, 'Error finding person by ID');
+    if (!data) return done(null, 'No person found with that ID');
+    done(null, data);
+  });
 };
 
 const findEditThenSave = (personId, done) => {
